@@ -41,6 +41,14 @@ Widget buttons(UserPost userpost) => Row(
           icon: const Icon(Icons.message),
           label: const Text('Comment'),
     ),
+    TextButton.icon(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.grey,
+          ),
+          onPressed: () {},
+          icon: const Icon(Icons.share),
+          label: const Text('Share'),
+    ),
   ],
 );  
 

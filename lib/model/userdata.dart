@@ -28,7 +28,7 @@ class UserData {
       username: 'Mike Johnson',
       time: '30 mins ago',
       postcontent: 'Just finished a marathon!',
-      postimg: 'assets/person3.jpg ',
+      postimg: 'assets/yuh.jpg',
       numshare: '5',
       numComments: '2',
     ),
