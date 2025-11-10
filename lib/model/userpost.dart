@@ -1,12 +1,15 @@
+import 'comment.dart';
+
 class UserPost {
   final String userimg;
   final String username;
   final String time;
   final String postcontent;
   final String postimg;
-  final String numshare;
-  final String numComments;
+  String numshare;
+  String numComments;
   bool isLiked;
+  List<Comment> comments = [];
 
   UserPost({
     required this.userimg,

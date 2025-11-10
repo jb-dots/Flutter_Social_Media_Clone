@@ -12,7 +12,52 @@ class Postlist extends StatefulWidget {
 }
 
 class _PostlistState extends State<Postlist> {
-var nametxtStyle = const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+  var nametxtStyle = const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+  final TextEditingController _commentController = TextEditingController();
+
+  void _showCommentDialog(BuildContext context, UserPost userpost) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add Comment'),
+          content: TextField(
+            controller: _commentController,
+            decoration: const InputDecoration(
+              hintText: 'Write your comment...',
+              border: OutlineInputBorder(),
+            ),
+            maxLines: 3,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _commentController.clear();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (_commentController.text.isNotEmpty) {
+                  setState(() {
+                    // Add the comment to the post
+                    userpost.numComments = '${int.parse(userpost.numComments) + 1}';
+                  });
+                  Navigator.pop(context);
+                  _commentController.clear();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Comment added successfully!')),
+                  );
+                }
+              },
+              child: const Text('Post'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 gotoPage(BuildContext context, dynamic page) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
@@ -37,7 +82,9 @@ Widget buttons(UserPost userpost) => Row(
           style: TextButton.styleFrom(
             foregroundColor: Colors.grey,
           ),
-          onPressed: () {},
+          onPressed: () {
+            _showCommentDialog(context, userpost);
+          },
           icon: const Icon(Icons.message),
           label: const Text('Comment'),
     ),
@@ -120,19 +167,20 @@ Widget showPost(UserPost userpost) => Column(
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: ListView(
-        shrinkWrap: true,
-        children: widget.userdata.userList.map((UserPost) {
-          return InkWell(
-            onTap: () {
-              gotoPage(context, ProfileView(userPost: UserPost));
-            },
-            child: showPost(UserPost),
-          );
-        }).toList(),
-      ),
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: widget.userdata.userList.length,
+      itemBuilder: (context, index) {
+        final post = widget.userdata.userList[index];
+        return InkWell(
+          onTap: () {
+            gotoPage(context, ProfileView(userPost: post));
+          },
+          child: showPost(post),
+        );
+      },
     );
   }
 }

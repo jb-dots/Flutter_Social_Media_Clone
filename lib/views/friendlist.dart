@@ -28,6 +28,8 @@ class Friendlist extends StatelessWidget {
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,
       mainAxisExtent: 180,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
     ),
     itemCount: userData.friendList.length,
     itemBuilder: (BuildContext ctx, index){
